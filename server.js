@@ -39,6 +39,19 @@ app.get('*', (req, res) =>
   res.sendFile(path.join(__dirname, 'public/index.html'))
 );
 
+app.post("/api/notes", function (req, res) {
+    var notes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+    let note = req.body;
+    let newID = notes.length.toString();
+    note.id = newID;
+    notes.push(note);
+  
+    fs.writeFileSync("./db/db.json", JSON.stringify(notes));
+    console.log("Note saved to db.json. Content: ", note);
+    res.json(notes);
+  });
+  
+
 app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT} 🚀`)
 );
