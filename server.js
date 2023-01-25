@@ -4,6 +4,7 @@ const fs = require('fs');
 
 
 const PORT = process.env.PORT || 3001;
+const publicDir = path.join(__dirname, "/public");
 
 const app = express();
 
@@ -17,7 +18,7 @@ app.use(express.static('public'));
 
 // GET Route for homepage
 app.get('/notes', (req, res) =>
-  res.sendFile(path.join(__dirname, '/public/notes.html'))
+  res.sendFile(path.join(publicDir, 'notes.html'))
 );
 
 // GET Route for homepage
@@ -36,10 +37,11 @@ app.get('/api/notes/:id', (req, res) => {
 
 // Wildcard route to direct users to a 404 page
 app.get('*', (req, res) =>
-  res.sendFile(path.join(__dirname, 'public/index.html'))
+  res.sendFile(path.join(publicDir, "index.html"))
 );
 
 app.post("/api/notes", function (req, res) {
+  console.log("req.body= ",req.body);
     var notes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
     let note = req.body;
     let newID = notes.length.toString();
